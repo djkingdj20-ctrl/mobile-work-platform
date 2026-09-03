@@ -4,77 +4,296 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Mobile Work</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
-.header{background:#111827;color:#fff;padding:24px 18px;border-radius:0 0 24px 24px}
-.header h1{margin:0;font-size:27px}
-.header p{margin:7px 0 0;color:#cbd5e1}
-.container{max-width:600px;margin:auto;padding:18px}
-.card{background:#fff;border-radius:18px;padding:18px;margin:15px 0;box-shadow:0 4px 15px #0001}
-.balance{display:flex;justify-content:space-between;align-items:center}
-.balance small{color:#64748b}
-.balance h2{margin:5px 0;color:#16a34a}
-input{width:100%;padding:14px;border:1px solid #d1d5db;border-radius:11px;font-size:16px;margin-top:8px;outline:none}
-input:focus{border-color:#2563eb}
-button{width:100%;padding:14px;border:0;border-radius:11px;background:#2563eb;color:white;font-size:16px;font-weight:bold;margin-top:10px}
-.secondary{background:#64748b}
-.answer{background:#eef2ff;color:#1e40af}
-.hidden{display:none}
-.task h3{margin:0 0 8px}
-.task p{color:#64748b;line-height:1.5}
-.reward{color:#16a34a;font-weight:bold}
-.message{padding:14px;border-radius:10px;margin-top:12px;font-weight:bold}
-.success{background:#dcfce7;color:#166534}
-.error{background:#fee2e2;color:#991b1b}
-.footer{text-align:center;color:#94a3b8;padding:25px}
-.tabs{display:flex;gap:8px;margin-bottom:15px}
-.tabs button{margin:0;background:#e5e7eb;color:#374151}
-.tabs button.active{background:#2563eb;color:#fff}
-.userbar{display:flex;justify-content:space-between;align-items:center}
-.logout{width:auto;padding:9px 14px;margin:0;background:#ef4444;font-size:14px}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f7fb;
+color:#172033;
+}
+
+.header{
+background:#111827;
+color:#fff;
+padding:24px 18px;
+border-radius:0 0 24px 24px;
+}
+
+.header h1{
+margin:0;
+font-size:27px;
+}
+
+.header p{
+margin:7px 0 0;
+color:#cbd5e1;
+}
+
+.container{
+max-width:600px;
+margin:auto;
+padding:18px;
+}
+
+.card{
+background:#fff;
+border-radius:18px;
+padding:18px;
+margin:15px 0;
+box-shadow:0 4px 15px #0001;
+}
+
+.balance{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+}
+
+.balance small{
+color:#64748b;
+}
+
+.balance h2{
+margin:5px 0;
+color:#16a34a;
+}
+
+input{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:11px;
+font-size:16px;
+margin-top:8px;
+outline:none;
+}
+
+input:focus{
+border-color:#2563eb;
+}
+
+button{
+width:100%;
+padding:14px;
+border:0;
+border-radius:11px;
+background:#2563eb;
+color:white;
+font-size:16px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.secondary{
+background:#64748b;
+}
+
+.danger{
+background:#ef4444;
+}
+
+.answer{
+background:#eef2ff;
+color:#1e40af;
+}
+
+.hidden{
+display:none;
+}
+
+.task h3{
+margin:0 0 8px;
+}
+
+.task p{
+color:#64748b;
+line-height:1.5;
+}
+
+.reward{
+color:#16a34a;
+font-weight:bold;
+}
+
+.message{
+padding:14px;
+border-radius:10px;
+margin-top:12px;
+font-weight:bold;
+}
+
+.success{
+background:#dcfce7;
+color:#166534;
+}
+
+.error{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.footer{
+text-align:center;
+color:#94a3b8;
+padding:25px;
+}
+
+.tabs{
+display:flex;
+gap:8px;
+margin-bottom:15px;
+}
+
+.tabs button{
+margin:0;
+background:#e5e7eb;
+color:#374151;
+}
+
+.tabs button.active{
+background:#2563eb;
+color:#fff;
+}
+
+.userbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logout{
+width:auto;
+padding:9px 14px;
+margin:0;
+background:#ef4444;
+font-size:14px;
+}
+
+.nav{
+display:flex;
+gap:8px;
+margin:15px 0;
+}
+
+.nav button{
+margin:0;
+background:#e5e7eb;
+color:#374151;
+}
+
+.nav button.active{
+background:#2563eb;
+color:#fff;
+}
+
+.historyItem{
+border-bottom:1px solid #e5e7eb;
+padding:14px 0;
+}
+
+.historyItem:last-child{
+border-bottom:0;
+}
+
+.historyTitle{
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.historyMeta{
+font-size:13px;
+color:#64748b;
+}
+
+.historyReward{
+color:#16a34a;
+font-weight:bold;
+margin-top:5px;
+}
+
+.empty{
+text-align:center;
+padding:25px 10px;
+color:#64748b;
+}
 </style>
 </head>
 
 <body>
 
 <div class="header">
+
 <h1>Mobile Work</h1>
+
 <p>Complete simple tasks. Earn rewards.</p>
+
 </div>
 
 <div class="container">
+
+<!-- AUTH -->
 
 <div id="authScreen">
 
 <div class="card">
 
 <div class="tabs">
-<button id="loginTab" class="active" onclick="showLogin()">Login</button>
-<button id="registerTab" onclick="showRegister()">Register</button>
+
+<button id="loginTab" class="active" onclick="showLogin()">
+Login
+</button>
+
+<button id="registerTab" onclick="showRegister()">
+Register
+</button>
+
 </div>
+
+<!-- LOGIN -->
 
 <div id="loginForm">
 
 <h2>Welcome Back 👋</h2>
 
-<input id="loginEmail" type="email" placeholder="Enter your email">
+<input
+id="loginEmail"
+type="email"
+placeholder="Enter your email"
+>
 
-<button onclick="login()">Login</button>
+<button onclick="login()">
+Login
+</button>
 
 <div id="loginMessage"></div>
 
 </div>
 
+<!-- REGISTER -->
+
 <div id="registerForm" class="hidden">
 
 <h2>Create Account 🚀</h2>
 
-<input id="registerName" type="text" placeholder="Full name">
+<input
+id="registerName"
+type="text"
+placeholder="Full name"
+>
 
-<input id="registerEmail" type="email" placeholder="Email address">
+<input
+id="registerEmail"
+type="email"
+placeholder="Email address"
+>
 
-<button onclick="register()">Create Account</button>
+<button onclick="register()">
+Create Account
+</button>
 
 <div id="registerMessage"></div>
 
@@ -84,33 +303,961 @@ button{width:100%;padding:14px;border:0;border-radius:11px;background:#2563eb;co
 
 </div>
 
+
+<!-- DASHBOARD -->
+
 <div id="dashboard" class="hidden">
 
 <div class="card userbar">
+
 <div>
+
 <small>Welcome</small>
-<h2 id="userName">User</h2>
+
+<h2 id="userName">
+User
+</h2>
+
 </div>
 
-<button class="logout" onclick="logout()">Logout</button>
+<button
+class="logout"
+onclick="logout()"
+>
+Logout
+</button>
+
 </div>
+
+
+<!-- BALANCE -->
 
 <div class="card balance">
 
 <div>
+
 <small>Your Balance</small>
-<h2 id="balance">₹0</h2>
+
+<h2 id="balance">
+₹0
+</h2>
+
 </div>
 
 <div>
+
 <small>Completed</small>
-<h2 id="completed">0</h2>
+
+<h2 id="completed">
+0
+</h2>
+
 </div>
 
 </div>
+
+
+<!-- NAVIGATION -->
+
+<div class="nav">
+
+<button
+id="tasksTab"
+class="active"
+onclick="showTasks()"
+>
+Tasks
+</button>
+
+<button
+id="walletTab"
+onclick="showWallet()"
+>
+Wallet
+</button>
+
+</div>
+
+
+<!-- TASK PAGE -->
+
+<div id="tasksPage">
 
 <div id="taskList">
-<h2>Available Tasks</h2>
+
+<h2>
+Available Tasks
+</h2>
+
+<p>
+Loading tasks...
+</p>
+
+</div>
+
+<div
+id="taskScreen"
+class="hidden"
+></div>
+
+</div>
+
+
+<!-- WALLET PAGE -->
+
+<div
+id="walletPage"
+class="hidden"
+>
+
+<div class="card">
+
+<h2>
+💰 Wallet
+</h2>
+
+<p>
+Available Balance
+</p>
+
+<h1
+id="walletBalance"
+style="color:#16a34a"
+>
+₹0
+</h1>
+
+<p>
+Total Tasks Completed:
+<strong id="walletCompleted">
+0
+</strong>
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+📋 Task History
+</h2>
+
+<div id="historyList">
+
+<p>
+Loading history...
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+Mobile Work Platform
+
+</div>
+
+</div>
+
+
+<script>
+
+let currentUser=null;
+
+let currentTask=null;
+
+
+/* AUTH TABS */
+
+function showLogin(){
+
+document
+.getElementById("loginForm")
+.classList
+.remove("hidden");
+
+document
+.getElementById("registerForm")
+.classList
+.add("hidden");
+
+document
+.getElementById("loginTab")
+.classList
+.add("active");
+
+document
+.getElementById("registerTab")
+.classList
+.remove("active");
+
+}
+
+
+function showRegister(){
+
+document
+.getElementById("loginForm")
+.classList
+.add("hidden");
+
+document
+.getElementById("registerForm")
+.classList
+.remove("hidden");
+
+document
+.getElementById("loginTab")
+.classList
+.remove("active");
+
+document
+.getElementById("registerTab")
+.classList
+.add("active");
+
+}
+
+
+/* REGISTER */
+
+async function register(){
+
+const name=
+document
+.getElementById("registerName")
+.value
+.trim();
+
+const email=
+document
+.getElementById("registerEmail")
+.value
+.trim();
+
+const message=
+document
+.getElementById("registerMessage");
+
+
+if(!name||!email){
+
+message.innerHTML=
+'<div class="message error">Please enter your name and email.</div>';
+
+return;
+
+}
+
+
+message.innerHTML="Creating account...";
+
+
+try{
+
+const response=
+await fetch("/api/register",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+name:name,
+email:email
+})
+
+});
+
+
+const data=
+await response.json();
+
+
+if(data.success){
+
+currentUser=data.user;
+
+localStorage.setItem(
+"mobileWorkUserId",
+currentUser.id
+);
+
+message.innerHTML=
+'<div class="message success">Account created successfully!</div>';
+
+setTimeout(
+showDashboard,
+500
+);
+
+}else{
+
+message.innerHTML=
+'<div class="message error">❌ '+data.message+'</div>';
+
+}
+
+}catch(error){
+
+message.innerHTML=
+'<div class="message error">❌ Server connection failed.</div>';
+
+}
+
+}
+
+
+/* LOGIN */
+
+async function login(){
+
+const email=
+document
+.getElementById("loginEmail")
+.value
+.trim();
+
+const message=
+document
+.getElementById("loginMessage");
+
+
+if(!email){
+
+message.innerHTML=
+'<div class="message error">Please enter your email.</div>';
+
+return;
+
+}
+
+
+message.innerHTML="Logging in...";
+
+
+try{
+
+const response=
+await fetch("/api/login",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+email:email
+})
+
+});
+
+
+const data=
+await response.json();
+
+
+if(data.success){
+
+currentUser=data.user;
+
+localStorage.setItem(
+"mobileWorkUserId",
+currentUser.id
+);
+
+showDashboard();
+
+}else{
+
+message.innerHTML=
+'<div class="message error">❌ '+data.message+'</div>';
+
+}
+
+}catch(error){
+
+message.innerHTML=
+'<div class="message error">❌ Server connection failed.</div>';
+
+}
+
+}
+
+
+/* DASHBOARD */
+
+function showDashboard(){
+
+document
+.getElementById("authScreen")
+.classList
+.add("hidden");
+
+document
+.getElementById("dashboard")
+.classList
+.remove("hidden");
+
+document
+.getElementById("userName")
+.textContent=
+currentUser.name;
+
+updateUser();
+
+loadTasks();
+
+}
+
+
+/* USER DATA */
+
+function updateUser(){
+
+if(!currentUser)return;
+
+document
+.getElementById("balance")
+.textContent=
+"₹"+currentUser.balance;
+
+document
+.getElementById("completed")
+.textContent=
+currentUser.tasksCompleted;
+
+document
+.getElementById("walletBalance")
+.textContent=
+"₹"+currentUser.balance;
+
+document
+.getElementById("walletCompleted")
+.textContent=
+currentUser.tasksCompleted;
+
+}
+
+
+/* TASKS */
+
+async function loadTasks(){
+
+try{
+
+const response=
+await fetch("/api/tasks");
+
+const data=
+await response.json();
+
+
+if(!data.success){
+
+document
+.getElementById("taskList")
+.innerHTML=
+"<p>Unable to load tasks.</p>";
+
+return;
+
+}
+
+
+document
+.getElementById("taskList")
+.innerHTML=
+"<h2>Available Tasks</h2>"+
+data.tasks.map(task=>`
+
+<div class="card task">
+
+<h3>
+${task.title}
+</h3>
+
+<p>
+${task.description}
+</p>
+
+<div class="reward">
+Earn ₹${task.reward}
+</div>
+
+<button
+onclick="openTask(${task.id})"
+>
+Start Task
+</button>
+
+</div>
+
+`).join("");
+
+
+}catch(error){
+
+document
+.getElementById("taskList")
+.innerHTML=
+"<p>Server connection failed.</p>";
+
+}
+
+}
+
+
+/* OPEN TASK */
+
+async function openTask(id){
+
+try{
+
+const response=
+await fetch("/api/tasks");
+
+const data=
+await response.json();
+
+currentTask=
+data.tasks.find(
+t=>t.id===id
+);
+
+
+if(!currentTask)return;
+
+
+document
+.getElementById("taskList")
+.classList
+.add("hidden");
+
+document
+.getElementById("taskScreen")
+.classList
+.remove("hidden");
+
+
+document
+.getElementById("taskScreen")
+.innerHTML=`
+
+<div class="card">
+
+<h2>
+${currentTask.title}
+</h2>
+
+<p>
+${currentTask.description}
+</p>
+
+<p class="reward">
+Reward: ₹${currentTask.reward}
+</p>
+
+<button
+class="answer"
+onclick="submitTask('YES')"
+>
+YES
+</button>
+
+<button
+class="answer"
+onclick="submitTask('NO')"
+>
+NO
+</button>
+
+<button
+class="secondary"
+onclick="goBack()"
+>
+Back
+</button>
+
+<div id="result"></div>
+
+</div>
+
+`;
+
+
+}catch(error){
+
+alert("Unable to open task.");
+
+}
+
+}
+
+
+/* SUBMIT TASK */
+
+async function submitTask(answer){
+
+if(!currentTask||!currentUser)return;
+
+
+const result=
+document.getElementById("result");
+
+result.innerHTML=
+"Submitting...";
+
+
+try{
+
+const response=
+await fetch("/api/tasks/submit",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+userId:currentUser.id,
+
+taskId:currentTask.id,
+
+answer:answer
+
+})
+
+});
+
+
+const data=
+await response.json();
+
+
+if(data.success){
+
+currentUser.balance=
+data.balance;
+
+currentUser.tasksCompleted=
+data.tasksCompleted;
+
+updateUser();
+
+
+result.innerHTML=`
+
+<div class="message success">
+
+✅ Task completed!<br>
+
+You earned ₹${data.reward}
+
+</div>
+
+`;
+
+}else{
+
+result.innerHTML=`
+
+<div class="message error">
+
+❌ ${data.message}
+
+</div>
+
+`;
+
+}
+
+}catch(error){
+
+result.innerHTML=`
+
+<div class="message error">
+
+❌ Server connection failed.
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* BACK */
+
+function goBack(){
+
+document
+.getElementById("taskScreen")
+.classList
+.add("hidden");
+
+document
+.getElementById("taskList")
+.classList
+.remove("hidden");
+
+loadTasks();
+
+}
+
+
+/* TASKS TAB */
+
+function showTasks(){
+
+document
+.getElementById("tasksPage")
+.classList
+.remove("hidden");
+
+document
+.getElementById("walletPage")
+.classList
+.add("hidden");
+
+document
+.getElementById("tasksTab")
+.classList
+.add("active");
+
+document
+.getElementById("walletTab")
+.classList
+.remove("active");
+
+}
+
+
+/* WALLET TAB */
+
+function showWallet(){
+
+document
+.getElementById("tasksPage")
+.classList
+.add("hidden");
+
+document
+.getElementById("walletPage")
+.classList
+.remove("hidden");
+
+document
+.getElementById("tasksTab")
+.classList
+.remove("active");
+
+document
+.getElementById("walletTab")
+.classList
+.add("active");
+
+loadHistory();
+
+}
+
+
+/* HISTORY */
+
+async function loadHistory(){
+
+const historyList=
+document.getElementById("historyList");
+
+historyList.innerHTML=
+"<p>Loading history...</p>";
+
+
+try{
+
+const response=
+await fetch(
+"/api/user/"+currentUser.id+"/submissions"
+);
+
+const data=
+await response.json();
+
+
+if(!data.success){
+
+historyList.innerHTML=
+'<div class="message error">Unable to load history.</div>';
+
+return;
+
+}
+
+
+if(data.history.length===0){
+
+historyList.innerHTML=
+'<div class="empty">No tasks completed yet.<br>Complete your first task to see it here.</div>';
+
+return;
+
+}
+
+
+historyList.innerHTML=
+data.history.map(item=>`
+
+<div class="historyItem">
+
+<div class="historyTitle">
+${item.taskTitle}
+</div>
+
+<div class="historyMeta">
+Answer: ${item.answer}
+</div>
+
+<div class="historyMeta">
+${formatDate(item.createdAt)}
+</div>
+
+<div class="historyReward">
++₹${item.reward}
+</div>
+
+</div>
+
+`).join("");
+
+
+}catch(error){
+
+historyList.innerHTML=
+'<div class="message error">Server connection failed.</div>';
+
+}
+
+}
+
+
+/* DATE */
+
+function formatDate(date){
+
+try{
+
+return new Date(date)
+.toLocaleString();
+
+}catch(error){
+
+return date;
+
+}
+
+}
+
+
+/* LOGOUT */
+
+function logout(){
+
+currentUser=null;
+
+currentTask=null;
+
+localStorage.removeItem(
+"mobileWorkUserId"
+);
+
+document
+.getElementById("dashboard")
+.classList
+.add("hidden");
+
+document
+.getElementById("authScreen")
+.classList
+.remove("hidden");
+
+document
+.getElementById("loginEmail")
+.value="";
+
+showLogin();
+
+}
+
+
+/* RESTORE SESSION */
+
+async function restoreSession(){
+
+const id=
+localStorage.getItem(
+"mobileWorkUserId"
+);
+
+
+if(!id)return;
+
+
+try{
+
+const response=
+await fetch(
+"/api/user/"+id
+);
+
+const data=
+await response.json();
+
+
+if(data.success){
+
+currentUser=data.user;
+
+showDashboard();
+
+}else{
+
+localStorage.removeItem(
+"mobileWorkUserId"
+);
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
+
+/* START */
+
+restoreSession();
+
+</script>
+
+</body>
+</html><h2>Available Tasks</h2>
 <p>Loading tasks...</p>
 </div>
 
