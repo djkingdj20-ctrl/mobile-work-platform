@@ -1,13 +1,1 @@
-
-{
-  "name": "mobile-work-platform",
-  "version": "1.0.0",
-  "description": "Mobile work platform connecting businesses with people for simple digital tasks.",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.21.2"
-  }
-}
+{"name":"mobile-work-platform","version":"1.0.0","description":"Mobile work platform connecting businesses with people for simple digital tasks.","main":"server.js","scripts":{"start":"node server.js"},"dependencies":{"express":"^4.21.2","pg":"^8.16.3"}}
