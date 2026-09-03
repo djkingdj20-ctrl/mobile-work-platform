@@ -12,67 +12,44 @@ let tasks=[
 {id:2,title:"Product Verification",description:"Is this product a shoe?",reward:1,type:"yesno"},
 {id:3,title:"Text Verification",description:"Does this image contain readable text?",reward:1,type:"yesno"}
 ];
-
 let submissions=[];
+
+app.post("/api/register",(req,res)=>{
+const{name,email}=req.body;
+if(!name||!email)return res.status(400).json({success:false,message:"Name and email are required"});
+const cleanEmail=email.trim().toLowerCase();
+if(!cleanEmail.includes("@"))return res.status(400).json({success:false,message:"Enter a valid email"});
+if(users.find(u=>u.email===cleanEmail))return res.status(400).json({success:false,message:"Account already exists. Please login."});
+const user={id:users.length+1,name:name.trim(),email:cleanEmail,balance:0,tasksCompleted:0};
+users.push(user);
+res.json({success:true,user});
+});
+
+app.post("/api/login",(req,res)=>{
+const{email}=req.body;
+if(!email)return res.status(400).json({success:false,message:"Email is required"});
+const cleanEmail=email.trim().toLowerCase();
+const user=users.find(u=>u.email===cleanEmail);
+if(!user)return res.status(404).json({success:false,message:"Account not found. Please register first."});
+res.json({success:true,user});
+});
 
 app.get("/api/tasks",(req,res)=>{
 res.json({success:true,tasks});
 });
 
-app.post("/api/register",(req,res)=>{
-const{name,email}=req.body;
-
-if(!name||!email){
-return res.status(400).json({success:false,message:"Name and email are required"});
-}
-
-let existing=users.find(u=>u.email===email);
-
-if(existing){
-return res.json({success:true,user:existing});
-}
-
-const user={
-id:users.length+1,
-name,
-email,
-balance:0,
-tasksCompleted:0
-};
-
-users.push(user);
-
-res.json({success:true,user});
-});
-
 app.post("/api/tasks/submit",(req,res)=>{
 const{userId,taskId,answer}=req.body;
-
 const user=users.find(u=>u.id===Number(userId));
 const task=tasks.find(t=>t.id===Number(taskId));
 
-if(!user){
-return res.status(404).json({success:false,message:"User not found"});
-}
+if(!user)return res.status(404).json({success:false,message:"User not found"});
+if(!task)return res.status(404).json({success:false,message:"Task not found"});
+if(!answer)return res.status(400).json({success:false,message:"Answer is required"});
 
-if(!task){
-return res.status(404).json({success:false,message:"Task not found"});
-}
+const already=submissions.find(s=>s.userId===user.id&&s.taskId===task.id);
 
-if(!answer){
-return res.status(400).json({success:false,message:"Answer is required"});
-}
-
-const already=submissions.find(
-s=>s.userId===user.id&&s.taskId===task.id
-);
-
-if(already){
-return res.status(400).json({
-success:false,
-message:"You already completed this task"
-});
-}
+if(already)return res.status(400).json({success:false,message:"You already completed this task"});
 
 const submission={
 id:submissions.length+1,
@@ -84,7 +61,6 @@ createdAt:new Date().toISOString()
 };
 
 submissions.push(submission);
-
 user.balance+=task.reward;
 user.tasksCompleted+=1;
 
@@ -100,14 +76,31 @@ tasksCompleted:user.tasksCompleted
 app.get("/api/user/:id",(req,res)=>{
 const user=users.find(u=>u.id===Number(req.params.id));
 
-if(!user){
-return res.status(404).json({
-success:false,
-message:"User not found"
-});
-}
+if(!user)return res.status(404).json({success:false,message:"User not found"});
 
 res.json({success:true,user});
+});
+
+app.get("/api/user/:id/submissions",(req,res)=>{
+const userId=Number(req.params.id);
+const user=users.find(u=>u.id===userId);
+
+if(!user)return res.status(404).json({success:false,message:"User not found"});
+
+const history=submissions
+.filter(s=>s.userId===userId)
+.map(s=>{
+const task=tasks.find(t=>t.id===s.taskId);
+return{
+id:s.id,
+taskTitle:task?task.title:"Task",
+answer:s.answer,
+reward:s.reward,
+createdAt:s.createdAt
+};
+});
+
+res.json({success:true,history});
 });
 
 app.get("/api/stats",(req,res)=>{
