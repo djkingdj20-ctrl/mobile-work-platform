@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mobile Work</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
+.header{background:#111827;color:#fff;padding:25px 20px;border-radius:0 0 25px 25px}
+.header h1{margin:0;font-size:28px}
+.header p{margin:8px 0 0;color:#cbd5e1}
+.container{padding:18px;max-width:650px;margin:auto}
+.balance{background:#fff;padding:20px;border-radius:18px;margin-top:-5px;box-shadow:0 4px 15px #0001}
+.balance small{color:#64748b}
+.balance h2{margin:8px 0;color:#16a34a;font-size:30px}
+.section-title{margin-top:25px}
+.task{background:#fff;border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 3px 12px #0001}
+.task h3{margin:0 0 8px}
+.task p{color:#64748b;line-height:1.5}
+.reward{font-weight:bold;color:#16a34a}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:#2563eb;color:#fff;font-size:16px;font-weight:bold;margin-top:10px}
+button:active{transform:scale(.98)}
+.footer{text-align:center;color:#94a3b8;padding:25px}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>Mobile Work</h1>
+<p>Complete simple tasks. Earn rewards.</p>
+</div>
+
+<div class="container">
+
+<div class="balance">
+<small>Your Balance</small>
+<h2>₹0.00</h2>
+<p>Tasks completed: 0</p>
+</div>
+
+<h2 class="section-title">Available Tasks</h2>
+
+<div id="tasks">
+<p>Loading tasks...</p>
+</div>
+
+<div class="footer">
+Mobile Work Platform
+</div>
+
+</div>
+
+<script>
+async function loadTasks(){
+try{
+const response=await fetch("/api/tasks");
+const data=await response.json();
+
+if(!data.success){
+document.getElementById("tasks").innerHTML="<p>Unable to load tasks.</p>";
+return;
+}
+
+document.getElementById("tasks").innerHTML=data.tasks.map(task=>`
+<div class="task">
+<h3>${task.title}</h3>
+<p>${task.description}</p>
+<div class="reward">Earn ₹${task.reward}</div>
+<button onclick="startTask(${task.id})">Start Task</button>
+</div>
+`).join("");
+
+}catch(error){
+document.getElementById("tasks").innerHTML="<p>Server connection failed.</p>";
+}
+}
+
+function startTask(id){
+alert("Task started! Task ID: "+id);
+}
+
+loadTasks();
+</script>
+
+</body>
+</html>
