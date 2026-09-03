@@ -4,113 +4,1023 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Mobile Work</title>
-
 <style>
 *{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
+.header{background:#111827;color:#fff;padding:24px 18px;border-radius:0 0 24px 24px}
+.header h1{margin:0;font-size:27px}
+.header p{margin:7px 0 0;color:#cbd5e1}
+.container{max-width:600px;margin:auto;padding:18px}
+.card{background:#fff;border-radius:18px;padding:18px;margin:15px 0;box-shadow:0 4px 15px #0001}
+.balance{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.balance small{color:#64748b}
+.balance h2{margin:5px 0;color:#16a34a}
+input,textarea,select{width:100%;padding:14px;border:1px solid #d1d5db;border-radius:11px;font-size:16px;margin-top:8px;outline:none;font-family:Arial}
+textarea{min-height:100px;resize:vertical}
+button{width:100%;padding:14px;border:0;border-radius:11px;background:#2563eb;color:white;font-size:16px;font-weight:bold;margin-top:10px}
+.secondary{background:#64748b}
+.danger{background:#ef4444}
+.answer{background:#eef2ff;color:#1e40af}
+.hidden{display:none}
+.task h3{margin:0 0 8px}
+.task p{color:#64748b;line-height:1.5}
+.reward{color:#16a34a;font-weight:bold}
+.message{padding:14px;border-radius:10px;margin-top:12px;font-weight:bold}
+.success{background:#dcfce7;color:#166534}
+.error{background:#fee2e2;color:#991b1b}
+.footer{text-align:center;color:#94a3b8;padding:25px}
+.tabs,.nav{display:flex;gap:8px;margin-bottom:15px}
+.tabs button,.nav button{margin:0;background:#e5e7eb;color:#374151}
+.tabs button.active,.nav button.active{background:#2563eb;color:#fff}
+.userbar{display:flex;justify-content:space-between;align-items:center}
+.logout{width:auto;padding:9px 14px;margin:0;background:#ef4444;font-size:14px}
+.historyItem,.adminTask{border-bottom:1px solid #e5e7eb;padding:14px 0}
+.historyItem:last-child,.adminTask:last-child{border-bottom:0}
+.historyTitle{font-weight:bold;margin-bottom:5px}
+.historyMeta{font-size:13px;color:#64748b}
+.historyReward{color:#16a34a;font-weight:bold;margin-top:5px}
+.empty{text-align:center;padding:25px 10px;color:#64748b}
+.statGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#f8fafc;border-radius:12px;padding:15px}
+.stat small{color:#64748b}
+.stat strong{display:block;font-size:23px;margin-top:5px}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:8px}
+.activeStatus{background:#dcfce7;color:#166534}
+.offStatus{background:#fee2e2;color:#991b1b}
+.adminActions{display:flex;gap:8px}
+.adminActions button{flex:1}
+</style>
+</head>
 
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f4f7fb;
-color:#172033;
+<body>
+
+<div class="header">
+<h1>Mobile Work</h1>
+<p>Complete simple tasks. Earn rewards.</p>
+</div>
+
+<div class="container">
+
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+
+<div class="card">
+
+<div class="tabs">
+<button id="loginTab" class="active" onclick="showLogin()">Login</button>
+<button id="registerTab" onclick="showRegister()">Register</button>
+</div>
+
+<div id="loginForm">
+
+<h2>Welcome Back 👋</h2>
+
+<input id="loginEmail" type="email" placeholder="Enter your email">
+
+<button onclick="login()">Login</button>
+
+<button class="secondary" onclick="showAdminLogin()">Admin Login</button>
+
+<div id="loginMessage"></div>
+
+</div>
+
+<div id="registerForm" class="hidden">
+
+<h2>Create Account 🚀</h2>
+
+<input id="registerName" type="text" placeholder="Full name">
+
+<input id="registerEmail" type="email" placeholder="Email address">
+
+<button onclick="register()">Create Account</button>
+
+<div id="registerMessage"></div>
+
+</div>
+
+<div id="adminLoginForm" class="hidden">
+
+<h2>Admin Login 🔐</h2>
+
+<input id="adminEmail" type="email" placeholder="Admin email">
+
+<input id="adminPassword" type="password" placeholder="Admin password">
+
+<button onclick="adminLogin()">Admin Login</button>
+
+<button class="secondary" onclick="showLogin()">Back to User Login</button>
+
+<div id="adminLoginMessage"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- USER DASHBOARD -->
+<div id="dashboard" class="hidden">
+
+<div class="card userbar">
+
+<div>
+<small>Welcome</small>
+<h2 id="userName">User</h2>
+</div>
+
+<button class="logout" onclick="logout()">Logout</button>
+
+</div>
+
+<div class="card balance">
+
+<div>
+<small>Your Balance</small>
+<h2 id="balance">₹0</h2>
+</div>
+
+<div>
+<small>Completed</small>
+<h2 id="completed">0</h2>
+</div>
+
+</div>
+
+<div class="nav">
+
+<button id="tasksTab" class="active" onclick="showTasks()">Tasks</button>
+
+<button id="walletTab" onclick="showWallet()">Wallet</button>
+
+</div>
+
+<div id="tasksPage">
+
+<div id="taskList">
+<h2>Available Tasks</h2>
+<p>Loading tasks...</p>
+</div>
+
+<div id="taskScreen" class="hidden"></div>
+
+</div>
+
+<div id="walletPage" class="hidden">
+
+<div class="card">
+
+<h2>💰 Wallet</h2>
+
+<p>Available Balance</p>
+
+<h1 id="walletBalance" style="color:#16a34a">₹0</h1>
+
+<p>Total Tasks Completed:
+<strong id="walletCompleted">0</strong>
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>📋 Task History</h2>
+
+<div id="historyList">
+<p>Loading history...</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard" class="hidden">
+
+<div class="card userbar">
+
+<div>
+<small>Admin Panel</small>
+<h2>Administrator</h2>
+</div>
+
+<button class="logout" onclick="adminLogout()">Logout</button>
+
+</div>
+
+<div class="card">
+
+<h2>📊 Platform Overview</h2>
+
+<div class="statGrid">
+
+<div class="stat">
+<small>Users</small>
+<strong id="adminUsers">0</strong>
+</div>
+
+<div class="stat">
+<small>Tasks</small>
+<strong id="adminTasks">0</strong>
+</div>
+
+<div class="stat">
+<small>Submissions</small>
+<strong id="adminSubmissions">0</strong>
+</div>
+
+<div class="stat">
+<small>Rewards Paid</small>
+<strong id="adminRewards">₹0</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>➕ Create New Task</h2>
+
+<input id="taskTitle" type="text" placeholder="Task title">
+
+<textarea id="taskDescription" placeholder="Task question / description"></textarea>
+
+<input id="taskReward" type="number" min="0.01" step="0.01" placeholder="Reward per task">
+
+<select id="taskType">
+<option value="yesno">YES / NO</option>
+</select>
+
+<button onclick="createTask()">Create & Publish Task</button>
+
+<div id="createTaskMessage"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 Manage Tasks</h2>
+
+<div id="adminTaskList">
+<p>Loading tasks...</p>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+Mobile Work Platform
+</div>
+
+</div>
+
+
+<script>
+
+let currentUser=null;
+let currentTask=null;
+let adminLoggedIn=false;
+
+
+/* AUTH */
+
+function showLogin(){
+
+document.getElementById("loginForm").classList.remove("hidden");
+document.getElementById("registerForm").classList.add("hidden");
+document.getElementById("adminLoginForm").classList.add("hidden");
+
+document.getElementById("loginTab").classList.add("active");
+document.getElementById("registerTab").classList.remove("active");
+
 }
 
-.header{
-background:#111827;
-color:#fff;
-padding:24px 18px;
-border-radius:0 0 24px 24px;
+function showRegister(){
+
+document.getElementById("loginForm").classList.add("hidden");
+document.getElementById("registerForm").classList.remove("hidden");
+document.getElementById("adminLoginForm").classList.add("hidden");
+
+document.getElementById("loginTab").classList.remove("active");
+document.getElementById("registerTab").classList.add("active");
+
 }
 
-.header h1{
-margin:0;
-font-size:27px;
+function showAdminLogin(){
+
+document.getElementById("loginForm").classList.add("hidden");
+document.getElementById("registerForm").classList.add("hidden");
+document.getElementById("adminLoginForm").classList.remove("hidden");
+
 }
 
-.header p{
-margin:7px 0 0;
-color:#cbd5e1;
+
+/* USER REGISTER */
+
+async function register(){
+
+const name=document.getElementById("registerName").value.trim();
+const email=document.getElementById("registerEmail").value.trim();
+const message=document.getElementById("registerMessage");
+
+if(!name||!email){
+
+message.innerHTML='<div class="message error">Please enter your name and email.</div>';
+return;
+
 }
 
-.container{
-max-width:600px;
-margin:auto;
-padding:18px;
+message.innerHTML="Creating account...";
+
+try{
+
+const response=await fetch("/api/register",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({name,email})
+});
+
+const data=await response.json();
+
+if(data.success){
+
+currentUser=data.user;
+
+localStorage.setItem("mobileWorkUserId",currentUser.id);
+
+showDashboard();
+
+}else{
+
+message.innerHTML='<div class="message error">❌ '+data.message+'</div>';
+
 }
 
-.card{
-background:#fff;
-border-radius:18px;
-padding:18px;
-margin:15px 0;
-box-shadow:0 4px 15px #0001;
+}catch(error){
+
+message.innerHTML='<div class="message error">❌ Server connection failed.</div>';
+
 }
 
-.balance{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:15px;
 }
 
-.balance small{
-color:#64748b;
+
+/* USER LOGIN */
+
+async function login(){
+
+const email=document.getElementById("loginEmail").value.trim();
+const message=document.getElementById("loginMessage");
+
+if(!email){
+
+message.innerHTML='<div class="message error">Please enter your email.</div>';
+return;
+
 }
 
-.balance h2{
-margin:5px 0;
-color:#16a34a;
+message.innerHTML="Logging in...";
+
+try{
+
+const response=await fetch("/api/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email})
+});
+
+const data=await response.json();
+
+if(data.success){
+
+currentUser=data.user;
+
+localStorage.setItem("mobileWorkUserId",currentUser.id);
+
+showDashboard();
+
+}else{
+
+message.innerHTML='<div class="message error">❌ '+data.message+'</div>';
+
 }
 
-input{
-width:100%;
-padding:14px;
-border:1px solid #d1d5db;
-border-radius:11px;
-font-size:16px;
-margin-top:8px;
-outline:none;
+}catch(error){
+
+message.innerHTML='<div class="message error">❌ Server connection failed.</div>';
+
 }
 
-input:focus{
-border-color:#2563eb;
 }
 
-button{
-width:100%;
-padding:14px;
-border:0;
-border-radius:11px;
-background:#2563eb;
-color:white;
-font-size:16px;
-font-weight:bold;
-margin-top:10px;
+
+/* USER DASHBOARD */
+
+function showDashboard(){
+
+document.getElementById("authScreen").classList.add("hidden");
+document.getElementById("adminDashboard").classList.add("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
+
+document.getElementById("userName").textContent=currentUser.name;
+
+updateUser();
+showTasks();
+
 }
 
-.secondary{
-background:#64748b;
+function updateUser(){
+
+if(!currentUser)return;
+
+document.getElementById("balance").textContent="₹"+currentUser.balance;
+document.getElementById("completed").textContent=currentUser.tasksCompleted;
+document.getElementById("walletBalance").textContent="₹"+currentUser.balance;
+document.getElementById("walletCompleted").textContent=currentUser.tasksCompleted;
+
 }
 
-.danger{
-background:#ef4444;
+
+/* USER TASKS */
+
+async function loadTasks(){
+
+try{
+
+const response=await fetch("/api/tasks");
+const data=await response.json();
+
+if(!data.success){
+
+document.getElementById("taskList").innerHTML="<p>Unable to load tasks.</p>";
+return;
+
 }
 
-.answer{
-background:#eef2ff;
-color:#1e40af;
+if(data.tasks.length===0){
+
+document.getElementById("taskList").innerHTML='<div class="empty">No tasks are available right now.</div>';
+return;
+
 }
 
-.hidden{
-display:none;
+document.getElementById("taskList").innerHTML=
+"<h2>Available Tasks</h2>"+
+data.tasks.map(task=>`
+
+<div class="card task">
+
+<h3>${task.title}</h3>
+
+<p>${task.description}</p>
+
+<div class="reward">Earn ₹${task.reward}</div>
+
+<button onclick="openTask(${task.id})">
+Start Task
+</button>
+
+</div>
+
+`).join("");
+
+}catch(error){
+
+document.getElementById("taskList").innerHTML="<p>Server connection failed.</p>";
+
 }
 
-.task h3{
-margin:0 0 8px;
 }
 
-.task p{
-color:#64748b;
+
+function openTask(id){
+
+fetch("/api/tasks")
+.then(response=>response.json())
+.then(data=>{
+
+currentTask=data.tasks.find(t=>t.id===id);
+
+if(!currentTask)return;
+
+document.getElementById("taskList").classList.add("hidden");
+document.getElementById("taskScreen").classList.remove("hidden");
+
+document.getElementById("taskScreen").innerHTML=`
+
+<div class="card">
+
+<h2>${currentTask.title}</h2>
+
+<p>${currentTask.description}</p>
+
+<p class="reward">Reward: ₹${currentTask.reward}</p>
+
+<button class="answer" onclick="submitTask('YES')">YES</button>
+
+<button class="answer" onclick="submitTask('NO')">NO</button>
+
+<button class="secondary" onclick="goBack()">Back</button>
+
+<div id="result"></div>
+
+</div>
+
+`;
+
+})
+.catch(()=>alert("Unable to open task."));
+
+}
+
+
+async function submitTask(answer){
+
+if(!currentTask||!currentUser)return;
+
+const result=document.getElementById("result");
+
+result.innerHTML="Submitting...";
+
+try{
+
+const response=await fetch("/api/tasks/submit",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+userId:currentUser.id,
+taskId:currentTask.id,
+answer:answer
+})
+});
+
+const data=await response.json();
+
+if(data.success){
+
+currentUser.balance=data.balance;
+currentUser.tasksCompleted=data.tasksCompleted;
+
+updateUser();
+
+result.innerHTML='<div class="message success">✅ Task completed!<br>You earned ₹'+data.reward+'</div>';
+
+loadHistory();
+
+}else{
+
+result.innerHTML='<div class="message error">❌ '+data.message+'</div>';
+
+}
+
+}catch(error){
+
+result.innerHTML='<div class="message error">❌ Server connection failed.</div>';
+
+}
+
+}
+
+
+function goBack(){
+
+document.getElementById("taskScreen").classList.add("hidden");
+document.getElementById("taskList").classList.remove("hidden");
+
+loadTasks();
+
+}
+
+
+/* WALLET */
+
+function showTasks(){
+
+document.getElementById("tasksPage").classList.remove("hidden");
+document.getElementById("walletPage").classList.add("hidden");
+
+document.getElementById("tasksTab").classList.add("active");
+document.getElementById("walletTab").classList.remove("active");
+
+loadTasks();
+
+}
+
+function showWallet(){
+
+document.getElementById("tasksPage").classList.add("hidden");
+document.getElementById("walletPage").classList.remove("hidden");
+
+document.getElementById("tasksTab").classList.remove("active");
+document.getElementById("walletTab").classList.add("active");
+
+loadHistory();
+
+}
+
+
+async function loadHistory(){
+
+const historyList=document.getElementById("historyList");
+
+historyList.innerHTML="<p>Loading history...</p>";
+
+try{
+
+const response=await fetch("/api/user/"+currentUser.id+"/submissions");
+const data=await response.json();
+
+if(!data.success){
+
+historyList.innerHTML='<div class="message error">Unable to load history.</div>';
+return;
+
+}
+
+if(data.history.length===0){
+
+historyList.innerHTML='<div class="empty">No tasks completed yet.</div>';
+return;
+
+}
+
+historyList.innerHTML=data.history.map(item=>`
+
+<div class="historyItem">
+
+<div class="historyTitle">${item.taskTitle}</div>
+
+<div class="historyMeta">Answer: ${item.answer}</div>
+
+<div class="historyMeta">${formatDate(item.createdAt)}</div>
+
+<div class="historyReward">+₹${item.reward}</div>
+
+</div>
+
+`).join("");
+
+}catch(error){
+
+historyList.innerHTML='<div class="message error">Server connection failed.</div>';
+
+}
+
+}
+
+
+function formatDate(date){
+
+return new Date(date).toLocaleString();
+
+}
+
+
+/* ADMIN LOGIN */
+
+async function adminLogin(){
+
+const email=document.getElementById("adminEmail").value.trim();
+const password=document.getElementById("adminPassword").value;
+const message=document.getElementById("adminLoginMessage");
+
+if(!email||!password){
+
+message.innerHTML='<div class="message error">Enter admin email and password.</div>';
+return;
+
+}
+
+message.innerHTML="Checking...";
+
+try{
+
+const response=await fetch("/api/admin/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email,password})
+});
+
+const data=await response.json();
+
+if(data.success){
+
+adminLoggedIn=true;
+
+localStorage.setItem("mobileWorkAdmin","true");
+
+showAdminDashboard();
+
+}else{
+
+message.innerHTML='<div class="message error">❌ '+data.message+'</div>';
+
+}
+
+}catch(error){
+
+message.innerHTML='<div class="message error">❌ Server connection failed.</div>';
+
+}
+
+}
+
+
+function showAdminDashboard(){
+
+document.getElementById("authScreen").classList.add("hidden");
+document.getElementById("dashboard").classList.add("hidden");
+document.getElementById("adminDashboard").classList.remove("hidden");
+
+loadAdminStats();
+loadAdminTasks();
+
+}
+
+
+/* ADMIN STATS */
+
+async function loadAdminStats(){
+
+try{
+
+const response=await fetch("/api/admin/stats");
+const data=await response.json();
+
+if(!data.success)return;
+
+document.getElementById("adminUsers").textContent=data.users;
+document.getElementById("adminTasks").textContent=data.tasks;
+document.getElementById("adminSubmissions").textContent=data.submissions;
+document.getElementById("adminRewards").textContent="₹"+data.totalRewardsPaid;
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
+
+/* CREATE TASK */
+
+async function createTask(){
+
+const title=document.getElementById("taskTitle").value.trim();
+const description=document.getElementById("taskDescription").value.trim();
+const reward=document.getElementById("taskReward").value;
+const type=document.getElementById("taskType").value;
+const message=document.getElementById("createTaskMessage");
+
+if(!title||!description||!reward){
+
+message.innerHTML='<div class="message error">Please fill all task fields.</div>';
+return;
+
+}
+
+message.innerHTML="Creating task...";
+
+try{
+
+const response=await fetch("/api/admin/tasks",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+title,
+description,
+reward,
+type
+})
+});
+
+const data=await response.json();
+
+if(data.success){
+
+message.innerHTML='<div class="message success">✅ Task created and published!</div>';
+
+document.getElementById("taskTitle").value="";
+document.getElementById("taskDescription").value="";
+document.getElementById("taskReward").value="";
+
+loadAdminStats();
+loadAdminTasks();
+
+}else{
+
+message.innerHTML='<div class="message error">❌ '+data.message+'</div>';
+
+}
+
+}catch(error){
+
+message.innerHTML='<div class="message error">❌ Server connection failed.</div>';
+
+}
+
+}
+
+
+/* ADMIN TASK LIST */
+
+async function loadAdminTasks(){
+
+const list=document.getElementById("adminTaskList");
+
+list.innerHTML="<p>Loading tasks...</p>";
+
+try{
+
+const response=await fetch("/api/admin/tasks");
+const data=await response.json();
+
+if(!data.success){
+
+list.innerHTML="<p>Unable to load tasks.</p>";
+return;
+
+}
+
+if(data.tasks.length===0){
+
+list.innerHTML='<div class="empty">No tasks found.</div>';
+return;
+
+}
+
+list.innerHTML=data.tasks.map(task=>`
+
+<div class="adminTask">
+
+<h3>${task.title}</h3>
+
+<p>${task.description}</p>
+
+<div class="reward">Reward: ₹${task.reward}</div>
+
+<span class="status ${task.active?"activeStatus":"offStatus"}">
+${task.active?"PUBLISHED":"DISABLED"}
+</span>
+
+<div class="adminActions">
+
+<button
+onclick="toggleTask(${task.id})"
+class="${task.active?"danger":"secondary"}"
+>
+${task.active?"Disable":"Publish"}
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}catch(error){
+
+list.innerHTML='<div class="message error">Server connection failed.</div>';
+
+}
+
+}
+
+
+/* TOGGLE TASK */
+
+async function toggleTask(id){
+
+try{
+
+const response=await fetch("/api/admin/tasks/"+id+"/toggle",{
+method:"POST"
+});
+
+const data=await response.json();
+
+if(data.success){
+
+loadAdminTasks();
+loadAdminStats();
+
+}else{
+
+alert(data.message);
+
+}
+
+}catch(error){
+
+alert("Server connection failed.");
+
+}
+
+}
+
+
+/* LOGOUT */
+
+function logout(){
+
+currentUser=null;
+currentTask=null;
+
+localStorage.removeItem("mobileWorkUserId");
+
+document.getElementById("dashboard").classList.add("hidden");
+document.getElementById("authScreen").classList.remove("hidden");
+
+showLogin();
+
+}
+
+
+function adminLogout(){
+
+adminLoggedIn=false;
+
+localStorage.removeItem("mobileWorkAdmin");
+
+document.getElementById("adminDashboard").classList.add("hidden");
+document.getElementById("authScreen").classList.remove("hidden");
+
+showLogin();
+
+}
+
+
+/* RESTORE USER SESSION */
+
+async function restoreSession(){
+
+const id=localStorage.getItem("mobileWorkUserId");
+
+if(!id)return;
+
+try{
+
+const response=await fetch("/api/user/"+id);
+const data=await response.json();
+
+if(data.success){
+
+currentUser=data.user;
+showDashboard();
+
+}else{
+
+localStorage.removeItem("mobileWorkUserId");
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
+
+/* RESTORE ADMIN */
+
+function restoreAdmin(){
+
+if(localStorage.getItem("mobileWorkAdmin")==="true"){
+
+adminLoggedIn=true;
+showAdminDashboard();
+
+}
+
+}
+
+
+/* START */
+
+restoreAdmin();
+
+if(!adminLoggedIn){
+
+restoreSession();
+
+}
+
+</script>
+
+</body>
+</html>color:#64748b;
 line-height:1.5;
 }
 
